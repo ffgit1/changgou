@@ -14,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/brand")
+@CrossOrigin       //实现跨域
 public class BrandController {
     @Autowired
     private BrandService brandService;
@@ -69,6 +70,7 @@ public class BrandController {
 
     /**
      * 根据id删除品牌数据
+     *
      * @param id
      * @return
      */
@@ -77,21 +79,30 @@ public class BrandController {
         brandService.delete(id);
         return new Result(true, StatusCode.OK, "删除成功");
     }
+
     @GetMapping("/search")
-    public Result findList(@RequestParam Map searcheMap){
+    public Result findList(@RequestParam Map searcheMap) {
         List list = brandService.findList(searcheMap);
-        return new Result(true,StatusCode.OK,"查询成功",list);
+        return new Result(true, StatusCode.OK, "查询成功", list);
     }
+
     @GetMapping("/search/{page}/{size}")
-    public Result findPage(@PathVariable int page,@PathVariable int size){
+    public Result findPage(@PathVariable int page, @PathVariable int size) {
         Page<Brand> page1 = brandService.findPage(page, size);
         PageResult pageResult = new PageResult(page1.getTotal(), page1.getResult());
-        return new Result(true,StatusCode.OK,"查询成功",pageResult);
+        return new Result(true, StatusCode.OK, "查询成功", pageResult);
     }
+
     @GetMapping(value = "/searchByMap/{page}/{size}")
-    public Result findPage(@RequestParam Map searchMap,@PathVariable int page,@PathVariable int size){
-        Page<Brand> page1 = brandService.findPage(searchMap,page, size);
+    public Result findPage(@RequestParam Map searchMap, @PathVariable int page, @PathVariable int size) {
+        Page<Brand> page1 = brandService.findPage(searchMap, page, size);
         PageResult pageResult = new PageResult(page1.getTotal(), page1.getResult());
-        return new Result(true,StatusCode.OK,"查询成功",pageResult);
+        return new Result(true, StatusCode.OK, "查询成功", pageResult);
+    }
+
+    @GetMapping("/category/{category}")
+    public Result findListByCategoryName(@PathVariable String category) {
+        List<Map> brandList = brandService.findListByCategoryName(category);
+        return new Result(true, StatusCode.OK, "查询成功", brandList);
     }
 }

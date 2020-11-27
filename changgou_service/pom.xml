@@ -13,5 +13,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>changgou_service_goods</module>
+        <module>changgou_service_file</module>
     </modules>
 </project>
